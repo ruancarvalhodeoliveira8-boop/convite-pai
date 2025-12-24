@@ -6,32 +6,19 @@
     <title>Para Meu Pai 💙</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #2c3e50; /* Azul Marinho Elegante */
-            --gold: #d4af37;
-            --bg-soft: #f4f7f9; /* Fundo azulado bem clarinho */
-        }
-
-        body { margin: 0; background: var(--bg-soft); font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
-        
-        /* Pétalas/Folhas caindo (tons azulados/brancos para o pai) */
+        body { margin: 0; background: #f4f7f9; font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
         .petal { position: absolute; background: #d1d9e0; border-radius: 150% 0 150% 0; opacity: 0.5; pointer-events: none; z-index: 1; animation: fall 5s linear infinite; }
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.7; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
-        
-        /* Telas de transição */
-        #overlay, #pergunta-screen { position: fixed; inset: 0; background: var(--bg-soft); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
+        #overlay, #pergunta-screen { position: fixed; inset: 0; background: #f4f7f9; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
         #pergunta-screen { display: none; z-index: 110; }
-
-        /* Card com moldura dourada */
-        .card { width: 85%; max-width: 380px; background: white; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; z-index: 10; display: none; }
+        .card { width: 85%; max-width: 380px; background: white; border-radius: 15px; border: 2px solid #d4af37; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; z-index: 10; display: none; }
         .v-container { padding: 10px; background: #000; }
         video { width: 100%; display: block; border-radius: 5px; }
-        .content { padding: 20px; border-top: 2px solid var(--gold); }
-
-        h1 { font-family: 'Great Vibes', cursive; color: var(--primary); font-size: 2.8rem; margin: 0; }
-        .btn { padding: 15px 35px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; margin-top: 20px; transition: 0.3s; }
-        .btn-start { background: var(--primary); color: white; font-family: 'Great Vibes', cursive; font-size: 2rem; }
-        .btn-sim { background: var(--primary); color: white; padding: 12px 40px; }
+        .content { padding: 20px; border-top: 2px solid #d4af37; }
+        h1 { font-family: 'Great Vibes', cursive; color: #2c3e50; font-size: 2.8rem; margin: 0; }
+        .btn { padding: 15px 35px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; margin-top: 20px; }
+        .btn-start { background: #2c3e50; color: white; font-family: 'Great Vibes', cursive; font-size: 2rem; }
+        .btn-sim { background: #2c3e50; color: white; padding: 12px 40px; }
         .btn-nao { background: #eee; color: #777; margin-left: 10px; }
     </style>
 </head>
@@ -60,7 +47,7 @@
         </div>
         <div class="content">
             <h1 id="txt-card">Meu Pai</h1>
-            <p style="color:#888; font-size:0.7rem; letter-spacing:2px; font-weight: 600;">ASSISTA COM O CORAÇÃO</p>
+            <p style="color:#888; font-size:0.7rem; letter-spacing:2px;">ASSISTA COM O CORAÇÃO</p>
         </div>
     </div>
 
@@ -76,15 +63,15 @@
             v.play().then(() => {
                 overlay.style.display = "none";
                 card.style.display = "block";
+            }).catch(() => {
+                alert("Erro: Verifique se o arquivo video2.mp4 está no seu GitHub com esse nome exato.");
             });
         }
 
-        // Função que controla a pausa aos 18.9s e evita o looping
         function checarTempo() {
             if (v.currentTime >= 18.9) {
                 v.pause();
-                v.removeEventListener('timeupdate', checarTempo); // Remove a trava para não repetir
-                
+                v.removeEventListener('timeupdate', checarTempo);
                 card.style.display = "none";
                 perg.style.display = "flex";
             }
@@ -100,11 +87,9 @@
         }
 
         function recusar() {
-            alert("Você é meu herói! 💙");
             responder();
         }
 
-        // Gerar pétalas suaves
         for (let i = 0; i < 20; i++) {
             const p = document.createElement('div');
             p.className = 'petal';
