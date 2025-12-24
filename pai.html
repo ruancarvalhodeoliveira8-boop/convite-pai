@@ -6,90 +6,121 @@
     <title>Para Meu Pai 💙</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: #f4f7f9; font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        /* Estilos Base */
+        body { 
+            margin: 0; 
+            background: #f4f7f9; 
+            font-family: 'Montserrat', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden; 
+        }
+
+        /* Efeito de Folhas/Pétalas */
         .petal { position: absolute; background: #d1d9e0; border-radius: 150% 0 150% 0; opacity: 0.5; pointer-events: none; z-index: 1; animation: fall 5s linear infinite; }
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.7; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
-        #overlay, #pergunta-screen { position: fixed; inset: 0; background: #f4f7f9; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
-        #pergunta-screen { display: none; z-index: 110; }
-        .card { width: 85%; max-width: 380px; background: white; border-radius: 15px; border: 2px solid #d4af37; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; z-index: 10; display: none; }
-        .v-container { padding: 10px; background: #000; }
+
+        /* Telas */
+        #tela-inicial, #tela-pergunta { 
+            position: fixed; inset: 0; background: #f4f7f9; 
+            display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; z-index: 1000; text-align: center; 
+        }
+        #tela-pergunta { display: none; z-index: 1100; }
+
+        /* Card do Vídeo */
+        .card { 
+            width: 85%; max-width: 380px; background: white; 
+            border-radius: 15px; border: 2px solid #d4af37; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            overflow: hidden; z-index: 10; display: none; 
+        }
+        .video-box { padding: 10px; background: #000; }
         video { width: 100%; display: block; border-radius: 5px; }
-        .content { padding: 20px; border-top: 2px solid #d4af37; }
+        .texto-card { padding: 20px; border-top: 2px solid #d4af37; }
+
+        /* Botões e Fontes */
         h1 { font-family: 'Great Vibes', cursive; color: #2c3e50; font-size: 2.8rem; margin: 0; }
-        .btn { padding: 15px 35px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; margin-top: 20px; }
-        .btn-start { background: #2c3e50; color: white; font-family: 'Great Vibes', cursive; font-size: 2rem; }
+        .btn { padding: 15px 35px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; margin-top: 20px; transition: 0.3s; }
+        .btn-azul { background: #2c3e50; color: white; font-family: 'Great Vibes', cursive; font-size: 2rem; }
         .btn-sim { background: #2c3e50; color: white; padding: 12px 40px; }
         .btn-nao { background: #eee; color: #777; margin-left: 10px; }
     </style>
 </head>
 <body>
 
-    <audio id="musicaFundo" loop><source src="musica2.mp3" type="audio/mpeg"></audio>
+    <audio id="audioElement" loop><source src="musica2.mp3" type="audio/mpeg"></audio>
 
-    <div id="overlay">
-        <h1 style="color:#555">Para Meu Pai...</h1>
-        <button class="btn btn-start" onclick="iniciar()">Abrir Convite 💙</button>
+    <div id="tela-inicial">
+        <h1 style="color:#555; margin-bottom: 20px;">Para Meu Pai...</h1>
+        <button class="btn btn-azul" onclick="abrirConvite()">Abrir Convite 💙</button>
     </div>
 
-    <div id="pergunta-screen">
+    <div id="tela-pergunta">
         <h1 style="font-size: 2.5rem; padding: 0 20px; color: #333;">Pai, você aceita entrar comigo?</h1>
         <div>
-            <button class="btn btn-sim" onclick="responder()">SIM 💙</button>
-            <button class="btn btn-nao" onclick="recusar()">NÃO</button>
+            <button class="btn btn-sim" onclick="confirmarSim()">SIM 💙</button>
+            <button class="btn btn-nao" onclick="confirmarSim()">NÃO</button>
         </div>
     </div>
 
-    <div class="card" id="main-card">
-        <div class="v-container">
-            <video id="videoMain" playsinline muted>
+    <div class="card" id="card-principal">
+        <div class="video-box">
+            <video id="videoElement" playsinline muted>
                 <source src="video2.mp4" type="video/mp4">
             </video>
         </div>
-        <div class="content">
-            <h1 id="txt-card">Meu Pai</h1>
+        <div class="texto-card">
+            <h1 id="titulo-final">Meu Pai</h1>
             <p style="color:#888; font-size:0.7rem; letter-spacing:2px;">ASSISTA COM O CORAÇÃO</p>
         </div>
     </div>
 
     <script>
-        const v = document.getElementById("videoMain");
-        const m = document.getElementById("musicaFundo");
-        const card = document.getElementById("main-card");
-        const perg = document.getElementById("pergunta-screen");
-        const overlay = document.getElementById("overlay");
+        const video = document.getElementById("videoElement");
+        const audio = document.getElementById("audioElement");
+        const card = document.getElementById("card-principal");
+        const pergunta = document.getElementById("tela-pergunta");
+        const inicial = document.getElementById("tela-inicial");
 
-        function iniciar() {
-            m.play().catch(() => {});
-            v.play().then(() => {
-                overlay.style.display = "none";
-                card.style.display = "block";
-            }).catch(() => {
-                alert("Erro: Verifique se o arquivo video2.mp4 está no seu GitHub com esse nome exato.");
+        function abrirConvite() {
+            // Remove a tela inicial
+            inicial.style.display = "none";
+            // Mostra o card do vídeo
+            card.style.display = "block";
+            
+            // Tenta dar play em ambos
+            audio.play().catch(e => console.log("Erro áudio"));
+            video.play().catch(e => {
+                alert("O vídeo video2.mp4 não foi encontrado. Verifique o nome no GitHub.");
             });
         }
 
-        function checarTempo() {
-            if (v.currentTime >= 18.9) {
-                v.pause();
-                v.removeEventListener('timeupdate', checarTempo);
+        // Monitora o tempo para a pergunta
+        function monitorarTempo() {
+            if (video.currentTime >= 18.9) {
+                video.pause();
+                // Para de monitorar para não entrar em looping
+                video.removeEventListener('timeupdate', monitorarTempo);
+                
+                // Esconde vídeo e mostra pergunta
                 card.style.display = "none";
-                perg.style.display = "flex";
+                pergunta.style.display = "flex";
             }
         }
 
-        v.addEventListener('timeupdate', checarTempo);
+        video.addEventListener('timeupdate', monitorarTempo);
 
-        function responder() {
-            perg.style.display = "none";
+        function confirmarSim() {
+            pergunta.style.display = "none";
             card.style.display = "block";
-            document.getElementById("txt-card").innerText = "Te amo, Pai! 💙";
-            v.play(); 
+            document.getElementById("titulo-final").innerText = "Te amo, Pai! 💙";
+            video.play();
         }
 
-        function recusar() {
-            responder();
-        }
-
+        // Criar folhas caindo
         for (let i = 0; i < 20; i++) {
             const p = document.createElement('div');
             p.className = 'petal';
